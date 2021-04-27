@@ -1,0 +1,27 @@
+{
+  "name": "learn-test",
+  "version": "1.0.0",
+  "description": "提供测试和学习的、基于nodejs express mongodb 和 mongoose 技术的项目",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chengOnLine/node-learn-test.git"
+  },
+  "author": "cheng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chengOnLine/node-learn-test/issues"
+  },
+  "homepage": "https://github.com/chengOnLine/node-learn-test#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "hbs": "^4.1.2",
+    "mongoose": "^5.12.5",
+    "nodeman": "^1.1.2"
+  }
+}
