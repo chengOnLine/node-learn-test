@@ -7,8 +7,10 @@ var bodyParser = require("body-parser");
 var path = require("path");
 
 // 导入 router(小型的express)
+
 var router = express.Router();
 var templateRouter = require("./router/template");
+var permissionRouter = require("./router/permission");
 
 // 链接mongoose数据库
 const mongoose = require('mongoose');
@@ -63,7 +65,16 @@ router.route('/api') //      /route/api
 		res.send("api");
 	});
 
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+
+app.post("/test" , (req , res)=>{
+    console.log("req" , req.url , req.params , req.body , req.query);
+    res.send("??");
+})
+
 app.use("/" , router);
+app.use("/mockLogin" , permissionRouter);
 app.use("/template" , templateRouter);
 
 try{
