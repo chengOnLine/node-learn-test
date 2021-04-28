@@ -1,81 +1,11 @@
 // 导入express
 var express = require("express");
-// 导入bodyParser 用于对post请求体进行解析
-var bodyParser = require("body-parser");
-// 导入 router(小型的express)
-var router = express.Router();
-
-var path = require("path");
 
 // 加载hbs模块 用于渲染动态模板html
 var hbs = require('hbs');
 
-// 加载数据模块
-var user = require("./public/scripts/user");
-
-// 加载数据模块
-var blogEngine = require('./public/scripts/blog');
-
 // 生产express 实例
 var app = express();
-
-// 链接mongoose数据库
-const mongoose = require('mongoose');
-
-// mongodb://dbUser:mongodb123456@datalake0-j1xml.a.query.mongodb.net/DataLake0?ssl=true&authSource=admin
-// mongodb+srv://dbUser:<password>@cluster0.j1xml.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-mongoose.connect('mongodb+srv://dbUser:mongodb123456@cluster0.j1xml.mongodb.net/testDatabase?retryWrites=true&w=majority', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-  useCreateIndex: true
-}).then(res=>{
-    console.log("connect successed!");
-}).catch(e=>{
-    console.log("connect failed!",e);
-})
-var db = mongoose.connection;
-
-db.on('error', function callback () {
-  console.log("Connection error");
-});
-
-db.once('open', function callback () {
-    console.log("Mongo working!");
-
-    var testSchema = mongoose.Schema({
-        name: String
-    });
-    
-    testSchema.methods.speak = function(){
-        var greeting = this.name
-        ? "Meow name is " + this.name
-        : "I don't have a name";
-        console.log(greeting);
-    }
-      
-    var TestModel = mongoose.model('doc', testSchema);
-
-    var testDemo = new TestModel({
-        name : 'i am demo',
-    });
-    testDemo.speak();
-    console.log("testDemo" , testDemo);
-
-    // arvind.save(function (err, data) {
-    //   if (err){
-    //     console.log(err);
-    //   } else {
-    //     console.log('Saved : ', data );
-    //   }
-    // });
-
-    // Test.find(function (err, kittens) {
-    //     if (err) return console.error(err);
-    //     console.log(kittens);
-    //   })
-});
-
 
 // app.use("/home", function(request, response, next) {
 //     response.writeHead(200, { "Content-Type": "text/plain" });
@@ -97,11 +27,14 @@ app.set('port', process.env.PORT || 8080);
 // app.set('views', path.join(__dirname, 'views'));
 
 // 设定view engine变量，意为网页模板引擎
-// app.set('view engine', 'jade');
+app.set('view engine', 'html');
 
 // 运行hbs模块
 app.engine('html', hbs.__express);
 
+app.get("/", function(req , res){
+    res.send("Hello world");
+})
 // 使用body-parser中间件对post请求体进行解析
 // app.use(bodyParser.urlencoded({extended : false}));
 // app.use(express.favicon()); //用来设置网站的图标，参数为图标的路径。如果不指明，则用默认的express图标
@@ -120,12 +53,8 @@ app.engine('html', hbs.__express);
 //     next(); // 执行下一个路由
 // })
 
-app.get("/", function(req , res){
-    res.send("Hello world");
-})
-
 // 配置跟路由
-app.get("/list" , function(req , res) {
+// app.get("/list" , function(req , res) {
     // res.send("Hello World");
 
     // var body = 'Hello World';
@@ -137,43 +66,23 @@ app.get("/list" , function(req , res) {
 
     // res.render('index');
 
-    res.render('index.html',{title:"最近文章", entries:blogEngine.getBlogEntries()});
-})
+    // res.render('index.html',{title:"最近文章", entries:blogEngine.getBlogEntries()});
+// })
 
-app.get('/about', function(req, res) {
-    res.render('about.html', {title:"自我介绍" , user:user.getUserInfo()});
-});
+// app.get('/about', function(req, res) {
+//     res.render('about.html', {title:"自我介绍" , user:user.getUserInfo()});
+// });
 
-app.get('/article/:id', function(req, res) {
-    var entry = blogEngine.getBlogEntry(req.params.id);
-    res.render('article.html',{title:entry.title, blog:entry});
-});
-
+// app.get('/article/:id', function(req, res) {
+//     var entry = blogEngine.getBlogEntry(req.params.id);
+//     res.render('article.html',{title:entry.title, blog:entry});
+// });
 
 // router的use方法使用中间件 , 注意顺序,
 // router就像一个小型的express
-router.use(function(req, res, next) {
-	console.log(req.method, req.url);
-	next();
-});
+// router.use(function(req, res, next) {
+// 	console.log(req.method, req.url);
+// 	next();
+// });
 
-router.route('/api') //      /route/api
-	.post(function(req, res) {
-
-	})
-	.get(function(req, res) {
-		res.send("api");
-	});
-
-app.use("/" , router);
-
-try{
-    app.listen(app.get("port"));   
-    console.log("服务已启动");
-}catch(e){
-    console.log("服务启动失败：",e);
-}
-
-module.exports = {
-    app
-}
+module.exports = app
