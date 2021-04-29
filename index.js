@@ -65,8 +65,8 @@ router.route('/api') //      /route/api
 		res.send("api");
 	});
 
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended: false}));
+// app.use(bodyParser.json());
 
 app.post("/test" , (req , res)=>{
     console.log("req" , req.url , req.params , req.body , req.query);
@@ -74,7 +74,7 @@ app.post("/test" , (req , res)=>{
 })
 
 app.use("/" , router);
-app.use("/mockLogin" , permissionRouter);
+app.use("/user" , permissionRouter);
 app.use("/template" , templateRouter);
 
 try{

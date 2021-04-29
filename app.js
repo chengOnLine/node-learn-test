@@ -4,8 +4,15 @@ var express = require("express");
 // 加载hbs模块 用于渲染动态模板html
 var hbs = require('hbs');
 
+// 导入bodyParser 用于对post请求体进行解析
+var bodyParser = require("body-parser");
+
 // 生产express 实例
 var app = express();
+
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 // app.use("/home", function(request, response, next) {
 //     response.writeHead(200, { "Content-Type": "text/plain" });
@@ -45,6 +52,7 @@ app.all("*", function(req, res, next) {
 app.get("/", function(req , res){
     res.send("Hello world");
 })
+
 // 使用body-parser中间件对post请求体进行解析
 // app.use(bodyParser.urlencoded({extended : false}));
 // app.use(express.favicon()); //用来设置网站的图标，参数为图标的路径。如果不指明，则用默认的express图标
