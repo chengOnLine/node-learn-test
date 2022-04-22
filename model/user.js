@@ -3,17 +3,30 @@ var mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
     name:{
         type:String,
-        require:true,
+        required:true,
     },
     email: {
         type: String,
-        require: true
+        required: true
     },
     password: {
         type: String,
-        require: true
+        required: true
     },
-    date: {
+    phone: {
+        type: String,
+    },
+    sex: {
+        type: Number,
+    },
+    birthday: {
+        type: Date,
+    },
+    userId: {
+        type: mongoose.ObjectId,
+        default: new mongoose.Types.ObjectId(),
+    },
+    createTime: {
         type: Date,
         default: Date.now
     }

@@ -3,6 +3,7 @@ const  app = require("./app");
 var express = require("express");
 // 导入bodyParser 用于对post请求体进行解析
 var bodyParser = require("body-parser");
+const formidable = require('express-formidable')
 
 var path = require("path");
 
@@ -11,6 +12,7 @@ var path = require("path");
 var router = express.Router();
 var templateRouter = require("./router/template");
 var permissionRouter = require("./router/permission");
+var pageRouter = require("./router/page");
 
 // 链接mongoose数据库
 const mongoose = require('mongoose');
@@ -65,9 +67,27 @@ router.route('/api') //      /route/api
 		res.send("api");
 	});
 
-// app.use(bodyParser.urlencoded({extended: false}));
-// app.use(bodyParser.json());
+router.route("/test")
+    .post(function(req, res) {
 
+    })
+    .get(function( req , res) {
+
+        setTimeout( () => {
+            const n = Math.random();
+            console.log(n);
+            if (n > 0.8) {
+                res.send("success"+n);
+            } else {
+                res.send(404)
+                    
+            }
+        } , 200 )
+    
+    })
+app.use(bodyParser.urlencoded({extended: false}));
+// app.use(bodyParser.json());
+// app.use(formidable())
 app.post("/test" , (req , res)=>{
     console.log("req" , req.url , req.params , req.body , req.query);
     res.send("??");
@@ -76,6 +96,7 @@ app.post("/test" , (req , res)=>{
 app.use("/" , router);
 app.use("/user" , permissionRouter);
 app.use("/template" , templateRouter);
+app.use("/page", pageRouter);
 
 try{
     app.listen(app.get("port"));   
